@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ .Name }} - Portfolio</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 40px auto; padding: 0 20px; color: #333; }
+        .repo { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 8px; }
+        h1 { color: #007bff; }
+    </style>
+</head>
+<body>
+    <h1>Привет, я {{ .Name }}!</h1>
+    <p>{{ .Bio }}</p>
+
+    <h2>Мои репозитории:</h2>
+    {{ range .Repos }}
+    <div class="repo">
+        <h3><a href="{{ .URL }}">{{ .Title }}</a></h3>
+        <p>{{ .Description }}</p>
+    </div>
+    {{ end }}
+</body>
+</html>
