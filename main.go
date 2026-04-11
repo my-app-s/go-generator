@@ -24,9 +24,9 @@ func main() {
 		Name: "my-app-s",
 		Bio:  "Go разработчик в процессе обучения. Люблю чистый код и быстрые сайты.",
 		Repos: []Repo{
-			{"Project-One", "Крутой проект на Go", "https://github.com/my-app-s/go-generator"},
-			{"Project-Two", "Go Heart Bot", "https://github.com/my-app-s/go-heart-bot"},
-			{"Project-Three", "Go Simple Router with Recovery", "https://github.com/my-app-s/go-custom-router"},
+			{"📦 Project-One", "Крутой проект на Go", "https://github.com/my-app-s/go-generator"},
+			{"📦 Project-Two", "Go Heart Bot", "https://github.com/my-app-s/go-heart-bot"},
+			{"📦 Project-Three", "Go Simple Router with Recovery", "https://github.com/my-app-s/go-custom-router"},
 		},
 	}
 
