@@ -24,7 +24,7 @@ git clone https://github.com/my-app-s/go-generator.git
 cd go-generator
 go mod tidy
 ```
-### 💻 Run
+### 💻 Usage
 ```bash
 go run main.go
 ```
@@ -41,8 +41,8 @@ Generated page view here:
 ### English Version
 This project is an **independent development** provided on an **"AS IS"** basis.
 
-* **Authorship:** The inclusion of links to the author's repositories ([my-app-s]) within the code or generated files is for informational purposes only and does not imply any obligation for technical support.
-* **Liability:** In no event shall the author be liable for any errors, bugs, data loss, or other consequences arising from the use of this software.
+* **Authorship:** The inclusion of mentions or links to the author's repositories ([my-app-s]) within the code or generated files is for informational purposes only and does not imply any obligation for support.
+* **Liability:** In no event shall the author be liable for any errors, bugs, or data loss arising from the use of this software.
 * **Status:** This is an experimental tool. Always verify the generated HTML output before deployment.
 
 > [!CAUTION]
@@ -53,7 +53,7 @@ This project is an **independent development** provided on an **"AS IS"** basis.
 ### Русская версия
 Данный проект является **независимой разработкой** и предоставляется «как есть».
 
-* **Авторство:** Наличие в коде или сгенерированных файлах ссылок на репозитории автора ([my-app-s]) носит информационный характер и не накладывает на автора обязательств по поддержке.
+* **Авторство:** Наличие в коде или сгенерированных файлах упоминания и ссылок на репозитории автора ([my-app-s]) носит информационный характер и не накладывает на автора обязательств по поддержке.
 * **Ответственность:** Автор не несет ответственности за любые ошибки, баги или потерю данных, возникшие в результате использования данного кода.
 * **Статус:** Это экспериментальный инструмент. Проверяйте сгенерированный HTML перед деплоем.
 
