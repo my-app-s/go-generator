@@ -34,16 +34,33 @@ Generated page view here:
 
 [👉 Demo на GitHub Pages](https://my-app-s.github.io/go-generator/)
 
-## ⚠️ Disclaimer
+---
 
-Данный проект является **независимой разработкой** и предоставляется на условиях **"AS IS"** (как есть). 
+## ⚠️ Disclaimer / Отказ от ответственности
 
-* **Статус:** Проект находится в стадии активной разработки (dev). Возможны критические изменения API и ошибки в работе.
-* **Ответственность:** Автор не несет ответственности за любой прямой или косвенный ущерб, потерю данных или иные последствия, возникшие в результате использования данного кода.
-* **Проверка:** Перед использованием сгенерированных файлов в продакшене или критически важных проектах рекомендуется провести тщательную проверку результата.
+### English Version
+This project is an **independent development** provided on an **"AS IS"** basis.
+
+* **Authorship:** The inclusion of links to the author's repositories ([my-app-s]) within the code or generated files is for informational purposes only and does not imply any obligation for technical support.
+* **Liability:** In no event shall the author be liable for any errors, bugs, data loss, or other consequences arising from the use of this software.
+* **Status:** This is an experimental tool. Always verify the generated HTML output before deployment.
 
 > [!CAUTION]
-> Используя данный инструмент, вы принимаете на себя все риски, связанные с его эксплуатацией.
+> Any use (operation) of this code is at your own risk.
+
+---
+
+### Русская версия
+Данный проект является **независимой разработкой** и предоставляется «как есть».
+
+* **Авторство:** Наличие в коде или сгенерированных файлах ссылок на репозитории автора ([my-app-s]) носит информационный характер и не накладывает на автора обязательств по поддержке.
+* **Ответственность:** Автор не несет ответственности за любые ошибки, баги или потерю данных, возникшие в результате использования данного кода.
+* **Статус:** Это экспериментальный инструмент. Проверяйте сгенерированный HTML перед деплоем.
+
+> [!CAUTION]
+> Любое использование (эксплуатация) данного кода осуществляется на ваш страх и риск.
+
+---
 
 ## 📜 License
 Проект распространяется под лицензией **GNU AGPLv3**. Подробности в файле LICENSE.
