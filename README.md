@@ -1,35 +1,40 @@
 # HTML Generator in Go
 
 > [!NOTE]
-> Простой и быстрый генератор статических страниц, написанный на Go.
+> Простой и быстрый генератор статических страниц на Go с автоподгрузкой и конвертацией README.md.
 > 
-> ![Go Version](https://img.shields.io/badge/go-1.25%2B-blue.svg)
+> ![Go Version](https://img.shields.io/badge/go-1.22%2B-blue.svg)
 > ![License](https://img.shields.io/badge/license-GNU%20AGPLv3-red.svg)
 > ![status: dev](https://img.shields.io/badge/status-dev-orange)
 
 ## 🛠 Features
-- Fast performance: Генерация страницы занимает микросекунды.
-- Simple API: Создавайте элементы через цепочки вызовов.
-- GitHub Pages Ready: Автоматический вывод в папку /docs.
+- **Remote README Parsing:** Автоматически скачивает и конвертирует `README.md` с GitHub в чистый HTML.
+- **Fast performance:** Генерация страницы занимает микросекунды благодаря Go.
+- **GitHub Pages Ready:** Автоматическая сборка через GitHub Actions и вывод в папку `/dist`.
 
 ## 🎨 Визуализация процесса
-- Input: Ваши структуры данных в Go.
-- Processing: Логика парсинга тегов в main.go.
-- Output: Готовый .html файл в директории /docs.
+- **Input:** Ваши структуры данных в Go и удаленный `README.md` репозитория.
+- **Processing:** Запрос по сети (`net/http`), парсинг Markdown (`gomarkdown`) и рендеринг через шаблоны Go.
+- **Output:** Готовый оптимизированный `.html` файл в директории `/dist`.
 
 ## 🚀 Быстрый старт
 ### 📦 Installation
 ```Bash
-git clone https://github.com/my-app-s/go-generator.git
+git clone [https://github.com/my-app-s/go-generator.git](https://github.com/my-app-s/go-generator.git)
 cd go-generator
 go mod tidy
+
 ```
+
 ### 💻 Usage
+
 ```bash
 go run main.go
+
 ```
 
 ## 🚀 Demo
+
 Generated page view here:
 
 [👉 Demo на GitHub Pages](https://my-app-s.github.io/go-generator/)
