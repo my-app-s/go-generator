@@ -96,7 +96,7 @@ func main() {
 	data.Description = template.HTML(htmlDescription) // Дописываем динамический HTML в структуру
 
 	// 3. Читаем шаблон
-	tmpl, err := template.ParseFiles("templates/my-app-s.html")
+	tmpl, err := template.ParseFiles("templates/index.html")
 	if err != nil {
 		panic(err)
 	}
