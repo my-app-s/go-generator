@@ -1,6 +1,7 @@
 {
   "name_repository": "go-generate",
   "name_author": "my-app-s(M.R.E)",
+  "readme_url": "https://raw.githubusercontent.com/my-app-s/my-new-landing/main/README.md",
   "url_avatar": "https://avatars.githubusercontent.com/u/94853425?v=4",
   "url_repository": "https://github.com/my-app-s/go-generator",
   "stack": [
