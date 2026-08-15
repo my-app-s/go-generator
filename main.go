@@ -26,7 +26,6 @@ type Urls struct {
 type PageData struct {
 	NameRepository string        `json:"name_repository"`
 	NameAuthor     string        `json:"name_author"`
-	ReadmeURL      string         `json:"readme_url"`
 	Description    template.HTML // Заполняется динамически из README.md
 	URLAvatar      string        `json:"url_avatar"`
 	URLRepository  string        `json:"url_repository"`
@@ -83,17 +82,14 @@ func main() {
 		panic(fmt.Sprintf("ошибка парсинга config.json: %v", err))
 	}
 
-	// 2. Скачиваем и конвертируем README.md по ссылке из конфига
-	// Если в конфиге ссылка пустая, подставляем дефолтную
-	rawReadmeURL := data.ReadmeURL
-	if rawReadmeURL == "" {
-		rawReadmeURL = "https://raw.githubusercontent.com/my-app-s/go-generator/main/README.md"
-	}
-
-	mdText, err := fetchReadme(rawReadmeURL)
+	// Читаем локальный README.md, который лежит рядом с config.json
+	mdBytes, err := os.ReadFile("README.md")
+	var mdText string
 	if err != nil {
-		fmt.Println("Предупреждение: не удалось загрузить README, используем текст по умолчанию:", err)
+		fmt.Println("Предупреждение: не удалось найти локальный README.md:", err)
 		mdText = "Описание временно недоступно."
+	} else {
+		mdText = string(mdBytes)
 	}
 	
 	htmlDescription := convertMarkdownToHTML(mdText)
