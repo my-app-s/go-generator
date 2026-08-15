@@ -1,8 +1,7 @@
-// Copyright (C) 2026 my-app-s (M.R.E)
-
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"io"
@@ -14,24 +13,24 @@ import (
 	"github.com/gomarkdown/markdown/parser"
 )
 
-// Описываем структуру данных для сайта
+// Теги `json:"..."` говорят Go, как сопоставлять ключи из файла с полями структуры
 type Tools struct {
-	Name string
+	Name string `json:"name"`
 }
 
 type Urls struct {
-	Name string
-	URL  string
+	Name string `json:"name"`
+	URL  string `json:"url"`
 }
 
 type PageData struct {
-	NameRepository string
-	NameAuthor     string
-	Description    template.HTML // Используем template.HTML для вывода сырого HTML
-	URLAvatar      string
-	URLRepository  string
-	Stack          []Tools
-	Links          []Urls
+	NameRepository string        `json:"name_repository"`
+	NameAuthor     string        `json:"name_author"`
+	Description    template.HTML // Заполняется динамически из README.md
+	URLAvatar      string        `json:"url_avatar"`
+	URLRepository  string        `json:"url_repository"`
+	Stack          []Tools       `json:"stack"`
+	Links          []Urls        `json:"links"`
 }
 
 // Функция для скачивания README.md с GitHub по сырой ссылке (Raw)
@@ -56,57 +55,43 @@ func fetchReadme(url string) (string, error) {
 
 // Функция для конвертации Markdown-текста в HTML
 func convertMarkdownToHTML(mdContent string) []byte {
-	// 1. Создаем набор расширений для парсера (заголовки, списки, ссылки и т.д.)
 	extensions := parser.CommonExtensions | parser.AutoHeadingIDs
 	p := parser.NewWithExtensions(extensions)
-
-	// 2. Парсим Markdown в документ
 	doc := p.Parse([]byte(mdContent))
 
-	// 3. Создаем HTML-рендерер с настройками по умолчанию
 	htmlFlags := html.CommonFlags | html.HrefTargetBlank
 	opts := html.RendererOptions{Flags: htmlFlags}
 	renderer := html.NewRenderer(opts)
 
-	// 4. Рендерим документ в байты HTML
 	output := markdown.Render(doc, renderer)
-
 	return output
 }
 
 func main() {
-	// 1. Используем Raw-ссылку на README.md
-	rawReadmeURL := "https://raw.githubusercontent.com/my-app-s/go-generator/main/README.md"
+	// 1. Читаем конфигурационный файл config.json
+	configFile, err := os.Open("config.json")
+	if err != nil {
+		panic(fmt.Sprintf("не удалось открыть config.json: %v", err))
+	}
+	defer configFile.Close()
 
-	// Скачиваем сырой текст README
+	var data PageData
+	decoder := json.NewDecoder(configFile)
+	err = decoder.Decode(&data)
+	if err != nil {
+		panic(fmt.Sprintf("ошибка парсинга config.json: %v", err))
+	}
+
+	// 2. Скачиваем и конвертируем README.md
+	rawReadmeURL := "https://raw.githubusercontent.com/my-app-s/go-generator/main/README.md"
 	mdText, err := fetchReadme(rawReadmeURL)
 	if err != nil {
 		fmt.Println("Предупреждение: не удалось загрузить README, используем текст по умолчанию:", err)
 		mdText = "Описание временно недоступно."
 	}
 
-	// Конвертируем Markdown в HTML
 	htmlDescription := convertMarkdownToHTML(mdText)
-
-	// 2. Данные сайта
-	data := PageData{
-		NameRepository: "go-generate",
-		NameAuthor:     "my-app-s(M.R.E)",
-		Description:    template.HTML(htmlDescription), // Передаем готовый HTML
-		URLAvatar:      "https://avatars.githubusercontent.com/u/94853425?v=4",
-		URLRepository:  "https://github.com/my-app-s/go-generator",
-		Stack: []Tools{
-			{"Go"},
-			{"HTML5"},
-			{"CSS3"},
-		},
-		Links: []Urls{
-			{"GitHub", "https://github.com/my-app-s"},
-			{"Landing", "https://my-app-s.github.io/web-welcome"},
-			{"LinkedIn", "https://www.linkedin.com/in/rustem-m-692916334"},
-			{"HH", "https://hh.kz/resume/82ec45adff0f0ff5f60039ed1f6f3448515845"},
-		},
-	}
+	data.Description = template.HTML(htmlDescription) // Дописываем динамический HTML в структуру
 
 	// 3. Читаем шаблон
 	tmpl, err := template.ParseFiles("templates/my-app-s.html")
@@ -130,5 +115,5 @@ func main() {
 		panic(err)
 	}
 
-	println("Готово! Сайт сгенерирован в папку /dist с подгруженным README")
+	println("Готово! Сайт сгенерирован в папку /dist с данными из config.json")
 }
