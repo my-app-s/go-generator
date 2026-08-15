@@ -28,7 +28,6 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: '1.22'
-          cache: false
 
       # Установка зависимостей (нужно, чтобы подтянулся пакет markdown)
       - name: Install dependencies
