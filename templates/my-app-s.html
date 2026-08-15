@@ -182,7 +182,7 @@
             <nav class="nav" aria-label="Главная навигация">
                 <ul class="nav__list">
                     {{ range .Links }}
-                    <li class="nav__item"><a href="{{ .URL }}" class="nav__link">{{ .Name }}</a></li>
+                    <li class="nav__item"><a href="{{ .URL }}" class="nav__link" target="_blank" rel="noopener noreferrer">{{ .Name }}</a></li>
                     {{ end }}
                 </ul>
             </nav>
@@ -192,7 +192,7 @@
     <main class="main container">
         <section class="about">
             <h2 class="about__title">Мой репозиторий:</h2>
-            <a class="about__repo-link" href="{{ .URLRepository }}">
+            <a class="about__repo-link" href="{{ .URLRepository }}" target="_blank" rel="noopener noreferrer">
                 {{ .NameRepository }} <span aria-hidden="true">🔗</span>
             </a>
             <h4 class="about__subtitle">Stack</h4>
