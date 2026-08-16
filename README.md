@@ -30,6 +30,12 @@ go mod tidy
 
 Перед запуском убедись, что в корне проекта созданы файлы `.github/workflow/deploy.yml`, `config.json` и Ваш `README.md`:
 
+> [!IMPORTANT]
+> Создать `config.json` по примеру со своими параметрами.
+
+> [!NOTE]
+> Создать `.github/workflow/deploy.yml` можно просто из примера если не используется свой `Generator`.
+
 #### Example (`deploy.yml`)
 
 ```yml
