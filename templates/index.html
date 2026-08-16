@@ -55,10 +55,19 @@
             background-color: var(--surface-color);
         }
 
+        .header__left {
+            background-color: #0de91f;
+        }
+
+        .header__right {
+            background-color: #e9ae0d;
+        }
+
         .header__inner {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
             padding-top: 12px;
             padding-bottom: 12px;
         }
@@ -174,7 +183,7 @@
     </style>
 </head>
 <body>
-
+<!--нужна адаптивность под смартфоны а то не переносится контенет-->
     <header class="header">
         <div class="container header__inner">
             <img class="header__avatar" src="{{ .URLAvatar }}" alt="Avatar">
