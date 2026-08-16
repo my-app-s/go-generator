@@ -170,6 +170,11 @@
             word-break: break-word; /* резервный вариант для старых браузеров */
         }
 
+        .markdown-content a,
+        .markdown-content a:visited {
+            color: #ffffff !important; /* !important перебьет любые встроенные стили */
+        }
+
         /* Дополнительно: чтобы длинный код или таблицы не ломали верстку сайта */
         .markdown-content pre {
             /* 1. Разрешаем перенос строк и сохраняем отступы/пробелы */
