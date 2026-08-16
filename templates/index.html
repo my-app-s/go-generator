@@ -163,6 +163,37 @@
             max-width: 800px;
         }
 
+        /* Контейнер, куда рендерится Markdown */
+        .markdown-content {
+            /* Главное против длинных строк и ссылок */
+            overflow-wrap: break-word;
+            word-break: break-word; /* резервный вариант для старых браузеров */
+        }
+
+        /* Дополнительно: чтобы длинный код или таблицы не ломали верстку сайта */
+        .markdown-content pre {
+            /* 1. Разрешаем перенос строк и сохраняем отступы/пробелы */
+            white-space: pre-wrap;
+            
+            /* 2. Принудительно разрываем слишком длинные слова или ссылки */
+            overflow-wrap: break-word;
+            word-break: break-word;
+
+            /* 3. Ограничиваем максимальную ширину на случай, если родительский блок сжался */
+            max-width: 100%;
+        }
+
+        .markdown-content pre code {
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .markdown-content table {
+            width: 100%;
+            overflow-x: auto;
+            display: block;
+        }
+
         /* --- 6. Подвал (Footer) --- */
         .footer {
             border-top: 1px solid rgba(233, 174, 13, 0.2);
@@ -212,8 +243,10 @@
             </ul>
         </section>
         
-        <div>
-            <p class="description">{{ .Description }}</p>
+        <div class="markdown-content">
+            <p class="description">
+                {{ .Description }}
+            </p>
         </div>
     </main>
 
