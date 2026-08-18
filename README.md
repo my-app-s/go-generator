@@ -18,13 +18,18 @@
 - **Output:** Готовый оптимизированный `.html` файл в директории `/dist`.
 
 ## 🚀 Быстрый старт
-### 📦 Installation
+### 📦 Installation for dev
 ```Bash
 git clone [https://github.com/my-app-s/go-generator.git](https://github.com/my-app-s/go-generator.git)
 cd go-generator
 go mod tidy
 
 ```
+### For use
+
+> [!IMPORTANT]
+> Это важная информация. Обычно подсвечивается **фиолетовым** или синим цветом.
+> Для использования достаточно положить в репозиторий с Вашим `README.md` файлы `.github/workflow/deploy.yml`, `config.json` по инструкции
 
 ### ⚙️ Configuration
 
