@@ -28,7 +28,6 @@ go mod tidy
 ### For use
 
 > [!IMPORTANT]
-> Это важная информация. Обычно подсвечивается **фиолетовым** или синим цветом.
 > Для использования достаточно положить в репозиторий с Вашим `README.md` файлы `.github/workflow/deploy.yml`, `config.json` по инструкции
 
 ### ⚙️ Configuration
