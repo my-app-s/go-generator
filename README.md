@@ -28,7 +28,7 @@ go mod tidy
 ### For use
 
 > [!IMPORTANT]
-> Для использования достаточно положить в репозиторий с Вашим `README.md` файлы `.github/workflow/deploy.yml`, `config.json` по инструкции
+> Для использования достаточно настроить положив в репозиторий с Вашим `README.md` файлы `.github/workflow/deploy.yml`, `config.json` по инструкции.
 
 ### ⚙️ Configuration
 
