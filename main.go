@@ -1,3 +1,6 @@
+// Copyright (C) 2026 my-app-s
+// Licensed under the GNU AGPLv3
+
 package main
 
 import (
