@@ -221,4 +221,4 @@ git push
 ## Author & Contacts
 
 - **GitHub**: [@my-app-s](https://github.com/my-app-s)
-- **LinkedIn**: [In/my-app-s/](https://www.linkedin.com/in/my-app-s/)
+- **LinkedIn**: [In/my-app-s/](https://www.linkedin.com/in/my-app-s)
