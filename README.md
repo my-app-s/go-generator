@@ -1,132 +1,209 @@
 # HTML Generator in Go
 
 > [!NOTE]
-> Простой и быстрый генератор статических страниц на Go с автоподгрузкой локального `README.md`.
 > 
-> ![Go Version](https://img.shields.io/badge/go-1.22%2B-blue.svg)
-> ![License](https://img.shields.io/badge/license-GNU%20AGPLv3-red.svg)
-> ![status: dev](https://img.shields.io/badge/status-dev-orange)
+> ![Go Version](https://img.shields.io/badge/Go-1.25%2B-blue.svg)
+> ![License](https://img.shields.io/badge/License-GNU%20AGPLv3-red.svg)
+> ![Status](https://img.shields.io/badge/Status-Dev-orange)
+> ![CI](https://img.shields.io/badge/CI-GitHub%20Actions-green)
+
+## Описание
+
+Простой и быстрый локальный генератор статического лендинга(статической страницы) на Go так же реализован как CI для GitHub Actions для автоматического деплоя в GitHub Pages.
 
 ## 🛠 Features
-- **Local README Parsing:** Автоматически читает и конвертирует локальный `README.md` в чистый HTML для лендинга.
+- **Local README Parsing:** Автоматически читает и конвертирует `README.md` в чистый HTML.
 - **Fast performance:** Генерация страницы занимает микросекунды благодаря Go.
-- **GitHub Pages Ready:** Автоматическая сборка через GitHub Actions и вывод в папку `/dist`.
+- **GitHub Pages Ready:** Автоматическая сборка с деплоем CI через GitHub Actions.
 
 ## 🎨 Визуализация процесса
-- **Input:** Конфигурация в `config.json` и локальный `README.md` репозитория.
+- **Input:** Конфигурация в `config.json` и `README.md` репозитория.
 - **Processing:** Чтение файлов, парсинг Markdown (`gomarkdown`) и рендеринг через шаблоны Go.
 - **Output:** Готовый оптимизированный `.html` файл в директории `/dist`.
 
-## 🚀 Быстрый старт
-### 📦 Installation for dev
+## 🚀 Инструкции
+
+### 📦 Локальная генерация (OS Linux)
+
+Для локальный генерации лендинга необходимо:
+- скачать репозиторий командой `git clone https://github.com/my-app-s/go-generator.git`
+- перейти в деректорию скачаного `go-generator`
+- обновить зависимости командой `go mod tidy`
+- запустить `main.go`
+
+Команды для выполнения в терминале:
+
 ```Bash
-git clone [https://github.com/my-app-s/go-generator.git](https://github.com/my-app-s/go-generator.git)
+# скачать репозиторий
+git clone https://github.com/my-app-s/go-generator.git
+# перейти в деректорию репозитория
 cd go-generator
+# обновить зависимости
 go mod tidy
-
+# запустить
+go run main.go
 ```
-### For use
 
-> [!IMPORTANT]
-> Для использования достаточно настроить положив в репозиторий с Вашим `README.md` файлы `.github/workflow/deploy.yml`, `config.json` по инструкции.
+- после создатся локальная директория `/dist` в которой будет сгенерированый файл `index.html`
+- перейти в директории `/dist` можно командой `cd dist`
+- посмотреть содержимое директории можно командой `ls`
 
-### ⚙️ Configuration
+Команды для выполнения в терминале:
 
-Перед запуском убедись, что в корне проекта созданы файлы `.github/workflow/deploy.yml`, `config.json` и Ваш `README.md`:
+```Bash
+# перейти в деректорию dist
+cd dist
+# посмотреть содержимое директории
+ls
+```
 
-> [!IMPORTANT]
-> Создать `config.json` по примеру со своими параметрами.
+### 📦 CI деплой для GitHub Page (GitHub Actions)
 
-> [!NOTE]
-> Создать `.github/workflow/deploy.yml` можно просто из примера если не используется свой `Generator`.
+Для автоматического деплоя с помощью GitHub Actions как CI для GitHub Page необходимо следующее:
+- создать в репозитории файл `deploy.yml` по пути `.github/workflows`
 
-#### Example (`deploy.yml`)
+Команды для выполнения в терминале:
+
+```Bash
+# созлание деректорий .github/workflows (ключ -p позволяет создать полный путь директорий)
+mkdir -p `.github/workflows`
+# созлание deploy.yml
+touch .github/workflows/deploy.yml
+```
+
+- скопировать пример **deploy** ниже в созданный файл `deploy.yml`
 
 ```yml
-name: Build and Deploy Landing
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ "main" ]
+    # Запускаем workflows при пуше в ветку main или вручную
+    branches: [ main ]
+    # Игнорируем файлы при изменении которых деплой не будет запускаться
+    paths-ignore:
+      - 'LICENSE'
+      - '.gitignore'
+      - '.github/workflows/**'
+  workflow_dispatch:
+
+# Устанавливаем права
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Разрешаем только один одновременный деплой
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pages: write
-      id-token: write
-
     steps:
       - name: Checkout Landing Repository (конфиг и редми)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: landing-source
 
       - name: Checkout Generator Repository (исходники генератора на Go)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: 'my-app-s/go-generator'
           token: ${{ secrets.GITHUB_TOKEN }}
           path: generator-source
 
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v7
         with:
-          go-version: '1.22'
+          go-version: '1.25'
           cache: false
 
-      - name: Build and Run Generator
+      - name: Build binaries
         run: |
-          # Переносим актуальные config.json и README.md в папку генератора
-          cp landing-source/config.json generator-source/
-          cp landing-source/README.md generator-source/
-
-          # Запускаем сборку
           cd generator-source
-          go run main.go
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o go-generator .
+          chmod +x ./go-generator
 
-          # Возвращаем готовую папку dist в корень для деплоя
-          mv dist ../dist
+      - name: Copy binaries
+        run: cp ./go-generator ../landing-source
+
+      - name: Run Go Generator
+        run: |
+          cd landing-source
+          ./go-generator
 
       - name: Setup Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
-          path: 'dist'
+          path: 'landing-source/dist'
+          retention-days: 1
 
+    deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
 ```
 
-#### Example (`config.json`)
+- создать в корне репозитория файл `config.json`
+
+Команды для выполнения в терминале:
+
+```Bash
+# созлание config.json
+touch config.json
+```
+
+- скопировать пример **config** ниже в созданный файл `config.json`
+
+> [!IMPORTANT]
+>
+> В файле config.json обязательно заполнить
+> Редактировать по правилам синтаксиса JSON
 
 ```json
 {
-  "name_repository": "go-generate",
-  "name_author": "my-app-s(M.R.E)",
-  "url_avatar": "[https://avatars.githubusercontent.com/u/94853425?v=4](https://avatars.githubusercontent.com/u/94853425?v=4)",
-  "url_repository": "[https://github.com/my-app-s/go-generator](https://github.com/my-app-s/go-generator)",
+  "name_repository": "название репозитория",
+  "name_author": "имя автора",
+  "url_avatar": "ссылка на аватар",
+  "url_repository": "ссылка на репозиторий",
   "stack": [
-    {"name": "Go"},
-    {"name": "HTML5"},
-    {"name": "CSS3"}
+    // можно удалить оставив нужное колличество
+    {"name": "имя навыка"}, // если более одного `,` обязательна
+    {"name": "имя навыка"},
+    {"name": "имя навыка"}
   ],
   "links": [
-    {"name": "GitHub", "url": "[https://github.com/my-app-s](https://github.com/my-app-s)"},
-    {"name": "Landing", "url": "[https://my-app-s.github.io/web-welcome](https://my-app-s.github.io/web-welcome)"},
-    {"name": "LinkedIn", "url": "[https://www.linkedin.com/in/rustem-m-692916334](https://www.linkedin.com/in/rustem-m-692916334)"},
-    {"name": "HH", "url": "[https://hh.kz/resume/82ec45adff0f0ff5f60039ed1f6f3448515845](https://hh.kz/resume/82ec45adff0f0ff5f60039ed1f6f3448515845)"}
+    // можно удалить оставив нужное колличество
+    {"name": "название", "url": "ссылка"}, // если более одного `,` обязательна
+    {"name": "название", "url": "ссылка"},
+    {"name": "название", "url": "ссылка"},
+    {"name": "название", "url": "ссылка"}
   ]
 }
-
 ```
 
+- в корне должен быть `README.md` (не обязательно но на сайте будет выведено `Описание временно недоступно`)
+- выполнить коммит
+- выполнить push
+
 ### 🔄 Обновление генератора в лендингах
-Если ты обновил код в репозитории `go-generator` (например, изменил шаблон HTML), то уже созданные лендинги подтянут изменения при следующем деплое. Чтобы принудительно запустить пересборку без изменения файлов лендинга, сделай пустой коммит:
+
+Если обновлен код в репозиторий `go-generator` (например, изменил шаблон HTML), то созданный лендинг подтянет изменения при следующем деплое. Чтобы принудительно запустить пересборку без изменения файлов лендинга, необходимо выполнить пустой коммит:
+
+> [!IMPORTANT]
+>
+> Но нужно из `paths-ignore` в `deploy.yml` удалить `'.github/workflows/**'` если этого не сделать **обновление генератора в лендингах** не сработает.
 
 ```bash
 git commit --allow-empty -m "ci: trigger rebuild with latest generator template"
@@ -134,30 +211,14 @@ git push
 
 ```
 
-### 💻 Usage
+## Disclaimer & License
 
-```bash
-go run main.go
+- **Short Disclaimer (EN)**: Materials are provided ***as is*** under the LICENSE file. No warranties, no rights granted unless explicitly stated. Authors are not liable for damages. No partnership or obligations created.
+- **Short Disclaimer (RU)**: Материалы предоставляются ***как есть*** и регулируются LICENSE. Гарантий нет, права не передаются без явного указания. Автор(ы) не несут ответственности. Партнёрство или обязательства не создаются.
+- **Full Disclaimer**: Read the full text in the [DISCLAIMER.md](https://github.com/my-app-s/my-app-s/blob/main/DISCLAIMER.md) (Available in EN/RU).
+- **License**: Distributed under the [GNU AGPLv3](./LICENSE) License.
 
-```
+## Author & Contacts
 
-## 🚀 Demo
-
-Generated page view here:
-
-[👉 Demo на GitHub Pages](https://my-app-s.github.io/go-generator/)
-
----
-
-## 📜 Disclaimer
-
-**English**: Materials are provided ***as is*** under the LICENSE file. No warranties, no rights granted unless explicitly stated. Authors are not liable for damages. No partnership or obligations created.  
-
-**Русский**: Материалы предоставляются ***как есть*** и регулируются LICENSE. Гарантий нет, права не передаются без явного указания. Автор(ы) не несут ответственности. Партнёрство или обязательства не создаются.  
-
-📌 See full disclaimer in [DISCLAIMER.md](https://github.com/my-app-s/my-app-s/blob/main/DISCLAIMER.md)
-
----
-
-## 📜 License
-Проект распространяется под лицензией **GNU AGPLv3**. Подробности в файле LICENSE.
+- **GitHub**: [@my-app-s](https://github.com/my-app-s)
+- **LinkedIn**: [In/my-app-s/](https://www.linkedin.com/in/my-app-s/)
