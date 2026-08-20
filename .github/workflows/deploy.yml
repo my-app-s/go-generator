@@ -4,6 +4,7 @@ on:
   push:
     branches: [ main ]
     paths-ignore:
+      - 'LICENSE'
       - '.gitignore'
       - '.github/workflows/**'
   workflow_dispatch:
@@ -42,6 +43,7 @@ jobs:
         uses: actions/upload-pages-artifact@v5
         with:
           path: './dist'
+          retention-days: 1
 
   deploy:
     environment:
