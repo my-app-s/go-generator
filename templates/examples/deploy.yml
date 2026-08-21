@@ -19,7 +19,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Landing Repository (конфиг и редми)
@@ -27,37 +27,8 @@ jobs:
         with:
           path: landing-source
 
-      - name: Checkout Generator Repository (исходники генератора на Go)
-        uses: actions/checkout@v7
-        with:
-          repository: 'my-app-s/go-generator'
-          token: ${{ secrets.GITHUB_TOKEN }}
-          path: generator-source
-
-      - name: Set up Go
-        uses: actions/setup-go@v7
-        with:
-          go-version: '1.25'
-          cache: false
-
-      - name: Install dependencies
-        run: |
-          cd generator-source
-          go mod tidy
-
-      - name: Build binaries
-        run: |
-          cd generator-source
-          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o go-generator .
-          chmod +x ./go-generator
-
-      - name: Copy binaries
-        run: cp ./go-generator ../landing-source
-
-      - name: Run Go Generator
-        run: |
-          cd landing-source
-          ./go-generator
+      - name: Generate Static Site
+        uses: my-app-s/go-generator@1
 
       - name: Setup Pages
         uses: actions/configure-pages@v6
@@ -68,7 +39,7 @@ jobs:
           path: 'landing-source/dist'
           retention-days: 1
 
-    deploy:
+  deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
