@@ -15,6 +15,9 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v7
+
     # 1. Download source go-generator in temp directory
     - name: Checkout Generator Repository
       uses: actions/checkout@v7
