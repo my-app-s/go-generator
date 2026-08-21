@@ -39,5 +39,3 @@ runs:
         chmod +x go-generator
         ./go-generator --config "../${{ inputs.config }}" --readme "../${{ inputs.readme }}"
         cp -r dist ../
-        cd ..
-        rm -rf temp-generator-source go-generator
