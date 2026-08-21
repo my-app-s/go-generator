@@ -1,0 +1,44 @@
+name: Run go-generator
+description: Build and run go-generator static
+
+# Input data user
+inputs:
+  config:
+    description: Path config file
+    reqiered: false
+    default: config.json
+  readme:
+    description: Path readme file
+    reqiered: false
+    default: README.md
+
+runs:
+  using: "composite"
+  steps:
+    # 1. Download source go-generator in temp directory
+    - name: Checkout Generator Repository
+      uses: actions/checkout@v7
+      with:
+        repository: my-app-s/go-generator
+        path: temp-generator-source
+
+    # 2. Set up Go
+    - name: Set up Go
+      uses: actions/setup-go@v7
+      with:
+        go-version: '1.25'
+        cache: false
+
+    # 3. Build and run binaries, export user
+    - name: Build binaries
+      shell: bash
+      run: |
+        cd temp-generator-source
+        go mod tidy
+        CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o ../go-generator .
+        chmod +x ../go-generator
+        cd ..
+
+        ./go-generator --config "${{ inputs.config }}" --readme "${{ inputs.readme }}"
+
+        rm -rf .temp-generator-source go-generator
