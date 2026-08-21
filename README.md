@@ -101,7 +101,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Landing Repository (конфиг и редми)
@@ -113,7 +113,6 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: 'my-app-s/go-generator'
-          token: ${{ secrets.GITHUB_TOKEN }}
           path: generator-source
 
       - name: Set up Go
@@ -150,7 +149,61 @@ jobs:
           path: 'landing-source/dist'
           retention-days: 1
 
-    deploy:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
+```
+
+Альтернативный вариант использование как Action:
+
+```yml
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'LICENSE'
+      - '.gitignore'
+      - '.github/workflows/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Landing Repository (конфиг и редми)
+        uses: actions/checkout@v7
+
+      - name: Generate Static Site
+        uses: my-app-s/go-generator@1
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v6
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: 'dist'
+          retention-days: 1
+
+  deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -203,6 +256,27 @@ touch config.json
 - в корне должен быть `README.md` (не обязательно но на сайте будет выведено `Описание временно недоступно`)
 - выполнить коммит
 - выполнить push
+
+## Realization Action
+
+### Example use in deploy:
+
+Если стандартно по инструкции:
+
+```yaml
+- name: Generate Static Site
+  uses: my-app-s/go-generator@1
+```
+
+Или используется кастомный подход:
+
+```yaml
+- name: Generate Static Site
+  uses: my-app-s/go-generator@1
+  with:
+    config: 'custom-config.json'
+    readme: 'docs/MAIN_README.md'
+```
 
 ### 🔄 Обновление генератора в лендингах
 
