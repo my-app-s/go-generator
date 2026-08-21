@@ -33,7 +33,7 @@ runs:
       shell: bash
       run: |
         go mod tidy
-        CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o ../go-generator .
-        chmod +x ./go-generator
-        ./go-generator --config "${{ inputs.config }}" --readme "${{ inputs.readme }}"
-        rm -rf .temp-generator-source go-generator
+        CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o go-generator .
+        chmod +x go-generator
+        go-generator --config "${{ inputs.config }}" --readme "${{ inputs.readme }}"
+        rm go-generator
