@@ -5,11 +5,11 @@ description: Build and run go-generator static
 inputs:
   config:
     description: Path config file
-    reqiered: false
+    required: false
     default: config.json
   readme:
     description: Path readme file
-    reqiered: false
+    required: false
     default: README.md
 
 runs:
@@ -35,5 +35,5 @@ runs:
         go mod tidy
         CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o go-generator .
         chmod +x go-generator
-        go-generator --config "${{ inputs.config }}" --readme "${{ inputs.readme }}"
+        ./go-generator --config "${{ inputs.config }}" --readme "${{ inputs.readme }}"
         rm go-generator
