@@ -22,12 +22,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Landing Repository (конфиг и редми)
+      - name: Checkout Repository
         uses: actions/checkout@v7
-        with:
-          path: landing-source
 
-      - name: Generate Static Site
+      - name: Checkout Generator Repository
         uses: my-app-s/go-generator@v1
 
       - name: Setup Pages
@@ -36,7 +34,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: 'landing-source/dist'
+          path: 'dist'
           retention-days: 1
 
   deploy:
