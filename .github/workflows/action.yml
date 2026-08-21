@@ -19,7 +19,7 @@ runs:
     - name: Checkout Generator Repository
       uses: actions/checkout@v7
       with:
-        repository: 'my-app-s/go-generator'
+        repository: my-app-s/go-generator
         path: temp-generator-source
 
     # 2. Set up Go
