@@ -6,6 +6,7 @@
 > ![License](https://img.shields.io/badge/License-GNU%20AGPLv3-red.svg)
 > ![Status](https://img.shields.io/badge/Status-Dev-orange)
 > ![CI](https://img.shields.io/badge/CI-GitHub%20Actions-green)
+> ![CI](https://github.com/my-app-s/go-generator/actions/workflows/deploy.yml/badge.svg)
 
 ## Описание
 
