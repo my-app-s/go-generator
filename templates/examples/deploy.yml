@@ -28,7 +28,7 @@ jobs:
           path: landing-source
 
       - name: Generate Static Site
-        uses: my-app-s/go-generator@1
+        uses: my-app-s/go-generator@v1
 
       - name: Setup Pages
         uses: actions/configure-pages@v6

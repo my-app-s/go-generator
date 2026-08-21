@@ -193,7 +193,7 @@ jobs:
 
       # Использование my-app-s/go-generator@1 action
       - name: Generate Static Site
-        uses: my-app-s/go-generator@1
+        uses: my-app-s/go-generator@v1
 
       - name: Setup Pages
         uses: actions/configure-pages@v6
@@ -266,14 +266,14 @@ touch config.json
 
 ```yaml
 - name: Generate Static Site
-  uses: my-app-s/go-generator@1
+  uses: my-app-s/go-generator@v1
 ```
 
 Или используется кастомный подход:
 
 ```yaml
 - name: Generate Static Site
-  uses: my-app-s/go-generator@1
+  uses: my-app-s/go-generator@v1
   with:
     config: 'custom-config.json'
     readme: 'docs/MAIN_README.md'
