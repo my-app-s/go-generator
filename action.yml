@@ -38,6 +38,6 @@ runs:
         CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o go-generator .
         chmod +x go-generator
         ./go-generator --config "../${{ inputs.config }}" --readme "../${{ inputs.readme }}"
-        cp -r dist ../dist
+        cp -r dist ../
         cd ..
         rm -rf temp-generator-source
