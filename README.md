@@ -191,6 +191,7 @@ jobs:
       - name: Checkout Landing Repository (конфиг и редми)
         uses: actions/checkout@v7
 
+      # Использование my-app-s/go-generator@1 action
       - name: Generate Static Site
         uses: my-app-s/go-generator@1
 
@@ -220,7 +221,7 @@ jobs:
 Команды для выполнения в терминале:
 
 ```Bash
-# созлание config.json
+# создание config.json
 touch config.json
 ```
 
