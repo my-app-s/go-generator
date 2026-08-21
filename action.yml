@@ -37,4 +37,8 @@ runs:
         go mod tidy
         CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o go-generator .
         chmod +x go-generator
+        cp ../config.json ../README.md ./
         ./go-generator --config "../${{ inputs.config }}" --readme "../${{ inputs.readme }}"
+        cp -r dist ../
+        cd ..
+        rm -rf temp-generator-source
