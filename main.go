@@ -77,6 +77,7 @@ func main() {
 	flag.Parse()
 
 	// 1. Читаем конфигурационный файл config.json
+	fmt.Println("Открываю config.json:", *configPath)
 	configFile, err := os.Open(*configPath)
 	if err != nil {
 		panic(fmt.Sprintf("не удалось открыть config.json: %v", err))
@@ -91,6 +92,7 @@ func main() {
 	}
 
 	// Читаем локальный README.md, который лежит рядом с config.json
+	fmt.Println("Читаю README.md:", *readmePath)
 	mdBytes, err := os.ReadFile(*readmePath)
 	var mdText string
 	if err != nil {
@@ -104,6 +106,7 @@ func main() {
 	data.Description = template.HTML(htmlDescription) // Дописываем динамический HTML в структуру
 
 	// 3. Читаем шаблон
+	fmt.Println("Читаю шаблон templates/index.html")
 	tmpl, err := template.ParseFiles("templates/index.html")
 	if err != nil {
 		panic(err)
@@ -113,6 +116,7 @@ func main() {
 	os.MkdirAll("dist", 0755)
 
 	// 5. Создаем итоговый файл
+	fmt.Println("Создаю dist/index.html")
 	f, err := os.Create("dist/index.html")
 	if err != nil {
 		panic(err)
