@@ -23,6 +23,8 @@
 
 ## 🚀 Инструкции
 
+Примеры есть по пути `templates/examples/` в репозитории.
+
 ### 📦 Локальная генерация (OS Linux)
 
 Для локальный генерации лендинга необходимо:
@@ -119,6 +121,11 @@ jobs:
         with:
           go-version: '1.25'
           cache: false
+
+      - name: Install dependencies
+        run: |
+          cd generator-source
+          go mod tidy
 
       - name: Build binaries
         run: |
