@@ -71,8 +71,12 @@ func convertMarkdownToHTML(mdContent string) []byte {
 }
 
 func main() {
+	configPath := flag.String("config", "config.json", "Path to config file")
+    readmePath := flag.String("readme", "README.md", "Path to README file")
+    flag.Parse()
+
 	// 1. Читаем конфигурационный файл config.json
-	configFile, err := os.Open("config.json")
+	configFile, err := os.Open(*configPath)
 	if err != nil {
 		panic(fmt.Sprintf("не удалось открыть config.json: %v", err))
 	}
@@ -86,7 +90,7 @@ func main() {
 	}
 
 	// Читаем локальный README.md, который лежит рядом с config.json
-	mdBytes, err := os.ReadFile("README.md")
+	mdBytes, err := os.ReadFile(*readmePath)
 	var mdText string
 	if err != nil {
 		fmt.Println("Предупреждение: не удалось найти локальный README.md:", err)
