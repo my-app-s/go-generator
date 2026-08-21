@@ -5,6 +5,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"html/template"
 	"io"
@@ -72,8 +73,8 @@ func convertMarkdownToHTML(mdContent string) []byte {
 
 func main() {
 	configPath := flag.String("config", "config.json", "Path to config file")
-    readmePath := flag.String("readme", "README.md", "Path to README file")
-    flag.Parse()
+	readmePath := flag.String("readme", "README.md", "Path to README file")
+	flag.Parse()
 
 	// 1. Читаем конфигурационный файл config.json
 	configFile, err := os.Open(*configPath)
@@ -98,7 +99,7 @@ func main() {
 	} else {
 		mdText = string(mdBytes)
 	}
-	
+
 	htmlDescription := convertMarkdownToHTML(mdText)
 	data.Description = template.HTML(htmlDescription) // Дописываем динамический HTML в структуру
 
