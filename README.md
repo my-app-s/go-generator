@@ -299,7 +299,7 @@ git push
 - **Short Disclaimer (EN)**: Materials are provided ***as is*** under the LICENSE file. No warranties, no rights granted unless explicitly stated. Authors are not liable for damages. No partnership or obligations created.
 - **Short Disclaimer (RU)**: Материалы предоставляются ***как есть*** и регулируются LICENSE. Гарантий нет, права не передаются без явного указания. Автор(ы) не несут ответственности. Партнёрство или обязательства не создаются.
 - **Full Disclaimer**: Read the full text in the [DISCLAIMER.md](https://github.com/my-app-s/my-app-s/blob/main/DISCLAIMER.md) (Available in EN/RU).
-- **License**: Distributed under the [GNU AGPLv3](./LICENSE) license.
+- **License**: Distributed under the [GNU AGPLv3](https://github.com/my-app-s/go-generator/blob/main/LICENSE) license.
 
 ## Author & Contacts
 
