@@ -9,7 +9,6 @@
 > ![CI](https://github.com/my-app-s/go-generator/actions/workflows/deploy.yml/badge.svg)
 ![Latest Tag](https://img.shields.io/github/v/tag/my-app-s/go-generator)
 
-
 ## Описание
 
 Простой и быстрый локальный генератор статического лендинга(статической страницы) на Go так же реализован как CI для GitHub Actions для автоматического деплоя в GitHub Pages.
