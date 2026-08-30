@@ -260,14 +260,20 @@
 
     <footer class="footer">
         <div class="container footer__inner">
-            <div>© Copyright 2026</div>
+            <div>© Copyright {{ .CopyrightYear }} {{ .NameAuthor }}. Content rights belong to the author.</div>
             <div>
-                Create by my generator, more info to my
-                <a class="footer__link" href="https://github.com/my-app-s">GitHub</a>
+                Powered by go-generator · Designed by
+                <a class="footer__link" href="https://github.com/my-app-s" target="_blank" rel="noopener noreferrer">
+                    my-app-s
+                </a>
             </div>
             <div>
-                <a class="footer__link" href="mailto:Mail: myapps.mre.dev@gmail.com">
-                    Mail: myapps.mre.dev@gmail.com
+                <a class="footer__link" href="https://github.com/my-app-s/go-generator/issues" target="_blank" rel="noopener noreferrer">
+                    Report Generator Issue
+                </a>
+                ·
+                <a class="footer__link" href="mailto:myapps.mre.dev@gmail.com" target="_blank" rel="noopener noreferrer">
+                    Contact author
                 </a>
             </div>
         </div>

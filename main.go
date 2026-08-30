@@ -28,13 +28,14 @@ type Urls struct {
 }
 
 type PageData struct {
-	NameRepository string        `json:"name_repository"`
-	NameAuthor     string        `json:"name_author"`
-	Description    template.HTML // Заполняется динамически из README.md
-	URLAvatar      string        `json:"url_avatar"`
-	URLRepository  string        `json:"url_repository"`
-	Stack          []Tools       `json:"stack"`
-	Links          []Urls        `json:"links"`
+	NameRepository string        	`json:"name_repository"`
+	NameAuthor     string        	`json:"name_author"`
+	Description    template.HTML 	// Заполняется динамически из README.md
+	URLAvatar      string        	`json:"url_avatar"`
+	URLRepository  string        	`json:"url_repository"`
+	Stack          []Tools       	`json:"stack"`
+	Links          []Urls        	`json:"links"`
+	CopyrightYear		int				`json:"copyright_year"`
 }
 
 // Функция для скачивания README.md с GitHub по сырой ссылке (Raw)
