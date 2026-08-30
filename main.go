@@ -35,7 +35,7 @@ type PageData struct {
 	URLRepository  string        	`json:"url_repository"`
 	Stack          []Tools       	`json:"stack"`
 	Links          []Urls        	`json:"links"`
-	CopyrightYear		int				`json:"copyright_year"`
+	CopyrightYear		int			`json:"copyright_year"`
 }
 
 // Функция для скачивания README.md с GitHub по сырой ссылке (Raw)
