@@ -2,12 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
-    paths-ignore:
-      - 'action.yml'
-      - 'LICENSE'
-      - '.gitignore'
-      - '.github/workflows/**'
+    - 'README.md'
   workflow_dispatch:
 
 permissions:
