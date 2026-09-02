@@ -4,10 +4,9 @@
 > 
 > ![Go Version](https://img.shields.io/badge/Go-1.25%2B-blue.svg)
 > ![License](https://img.shields.io/badge/License-GNU%20AGPLv3-red.svg)
-> ![Status](https://img.shields.io/badge/Status-Dev-orange)
-> ![CI](https://img.shields.io/badge/CI-GitHub%20Actions-green)
+> ![Status](https://img.shields.io/badge/Status-Stable-green)
 > ![CI](https://github.com/my-app-s/go-generator/actions/workflows/deploy.yml/badge.svg)
-![Latest Tag](https://img.shields.io/github/v/tag/my-app-s/go-generator)
+> ![Latest Tag](https://img.shields.io/github/v/tag/my-app-s/go-generator)
 
 ## Описание
 
