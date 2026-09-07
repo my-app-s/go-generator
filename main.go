@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"html/template"
 	"io"
+	"log"
 	"net/http"
 	"os"
 
@@ -28,14 +29,14 @@ type Urls struct {
 }
 
 type PageData struct {
-	NameRepository string        	`json:"name_repository"`
-	NameAuthor     string        	`json:"name_author"`
-	Description    template.HTML 	// Заполняется динамически из README.md
-	URLAvatar      string        	`json:"url_avatar"`
-	URLRepository  string        	`json:"url_repository"`
-	Stack          []Tools       	`json:"stack"`
-	Links          []Urls        	`json:"links"`
-	CopyrightYear		int			`json:"copyright_year"`
+	NameRepository string        `json:"name_repository"`
+	NameAuthor     string        `json:"name_author"`
+	Description    template.HTML // Заполняется динамически из README.md
+	URLAvatar      string        `json:"url_avatar"`
+	URLRepository  string        `json:"url_repository"`
+	Stack          []Tools       `json:"stack"`
+	Links          []Urls        `json:"links"`
+	CopyrightYear  int           `json:"copyright_year"`
 }
 
 // Функция для скачивания README.md с GitHub по сырой ссылке (Raw)
@@ -73,62 +74,93 @@ func convertMarkdownToHTML(mdContent string) []byte {
 }
 
 func main() {
+	// Disable because Github Actions itself adds a timestamp
+	log.SetFlags(0)
+
 	configPath := flag.String("config", "config.json", "Path to config file")
 	readmePath := flag.String("readme", "README.md", "Path to README file")
 	flag.Parse()
 
-	// 1. Читаем конфигурационный файл config.json
+	// 1. Reading the configuration file config.json
 	fmt.Println("Открываю config.json:", *configPath)
 	configFile, err := os.Open(*configPath)
 	if err != nil {
-		panic(fmt.Sprintf("не удалось открыть config.json: %v", err))
-	}
+		log.Fatalf("::error:: failed to open config.json: %v", err)
+    }
 	defer configFile.Close()
 
 	var data PageData
 	decoder := json.NewDecoder(configFile)
 	err = decoder.Decode(&data)
 	if err != nil {
-		panic(fmt.Sprintf("ошибка парсинга config.json: %v", err))
-	}
+		log.Fatalf("::error:: error parsing config.json: %v", err)
+    }
 
-	// Читаем локальный README.md, который лежит рядом с config.json
-	fmt.Println("Читаю README.md:", *readmePath)
+	// We read the local README.md, which lies next to config.json
+	fmt.Println("Reading README.md:", *readmePath)
 	mdBytes, err := os.ReadFile(*readmePath)
 	var mdText string
 	if err != nil {
-		fmt.Println("Предупреждение: не удалось найти локальный README.md:", err)
-		mdText = "Описание временно недоступно."
+		fmt.Println("Warning: Could not find local README.md:", err)
+		mdText = "Description temporarily unavailable."
 	} else {
 		mdText = string(mdBytes)
 	}
 
 	htmlDescription := convertMarkdownToHTML(mdText)
-	data.Description = template.HTML(htmlDescription) // Дописываем динамический HTML в структуру
+	data.Description = template.HTML(htmlDescription) // Adding dynamic HTML to the structure
 
-	// 3. Читаем шаблон
-	fmt.Println("Читаю шаблон templates/index.html")
-	tmpl, err := template.ParseFiles("templates/index.html")
+	// 3. Reading the template
+	fmt.Println("I'm reading the template templates/index.html")
+	tmplHTML, err := template.ParseFiles("templates/index.html")
 	if err != nil {
-		panic(err)
+		log.Fatalf("::error:: template templates/index.html not found or invalid: %v", err)
+    }
+
+	// 4. Create a dist folder
+	err = os.MkdirAll("dist", 0755)
+    if err != nil {
+        log.Fatalf("::error:: failed to create dist directory: %v", err)
+    }
+
+	// 5. Creating the final file
+	fmt.Println("I create dist/index.html")
+	fHTML, err := os.Create("dist/index.html")
+	if err != nil {
+		log.Fatalf("::error:: failed to create dist/index.html: %v", err)
+    }
+	defer fHTML.Close()
+
+	// 6. Rendering data to a file
+	err = tmplHTML.Execute(fHTML, data)
+	if err != nil {
+		log.Fatalf("::error:: failed to execute template: %v", err)
+    }
+
+	// 7. Copy input.css
+	fmt.Println("Создаю dist/input.css")
+	tmplCSS, err := os.Open("templates/input.css")
+	if err != nil {
+		log.Fatalf("::error:: template input.css not found: %v", err)
+	}
+	defer tmplCSS.Close()
+
+	fCSS, err := os.Create("dist/input.css")
+	if err != nil {
+		log.Fatalf("::error:: file input.css not created: %v", err)
 	}
 
-	// 4. Создаем папку dist
-	os.MkdirAll("dist", 0755)
-
-	// 5. Создаем итоговый файл
-	fmt.Println("Создаю dist/index.html")
-	f, err := os.Create("dist/index.html")
+	// 1. Copying data
+	_, err = io.Copy(fCSS, tmplCSS)
 	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
-
-	// 6. Рендерим данные в файл
-	err = tmpl.Execute(f, data)
-	if err != nil {
-		panic(err)
+		fCSS.Close() // Close before falling so as not to leave the handle open
+		log.Fatalf("::error:: failed to copy input.css: %v", err)
 	}
 
-	println("Готово! Сайт сгенерирован в папку /dist с данными из config.json")
+	// 2. Close and check the error ONLY AFTER copying
+	if err := fCSS.Close(); err != nil {
+		log.Fatalf("::error:: failed to close input.css: %v", err)
+	}
+
+	println("Ready! The site is generated in the /dist folder with data from config.json")
 }
