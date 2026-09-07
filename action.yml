@@ -34,7 +34,9 @@ runs:
     - name: Build binaries
       shell: bash
       run: |
+        ls -la
         cd temp-generator-source
+        ls -la
         go mod tidy
         CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o go-generator .
         chmod +x go-generator
@@ -42,19 +44,31 @@ runs:
     - name: Generate static
       shell: bash
       run: |
+        ls -la
         cd temp-generator-source
+        ls -la
         ./go-generator --config "../temp-source/${{ inputs.config }}" --readme "../temp-source/${{ inputs.readme }}"
-        mv dist ../
 
     - name: Download Tailwind CLI
       shell: bash
       run: |
-        cd dist
+        ls -la
+        cd temp-generator-source/dist
+        ls -la
         curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/download/v4.3.3/tailwindcss-linux-x64
         chmod +x tailwindcss-linux-x64
 
     - name: Run compilation style
       shell: bash
       run: |
-        cd dist
+        ls -la
+        cd temp-generator-source/dist
+        ls -la
         ./tailwindcss-linux-x64 -i input.css -o ./output.css --minify
+        mv dist ../dist
+
+    - name: Move final dist to root
+      shell: bash
+      run: |
+        ls -la
+        mv dist ../
