@@ -1,283 +1,61 @@
 <!-- Copyright (C) 2026 my-app-s (M.R.E) -->
+<!-- Licensed under the GNU AGPLv3 -->
 
 <!DOCTYPE html>
-<html lang="ru">
+<html class="scroll-smooth" lang="ru">
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="{{ .URLAvatar }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ .NameRepository }} — Landing</title>
-    
-    <style>
-        /* --- 1. Кастомные свойства (CSS Variables) --- */
-        :root {
-            --bg-color: #333230;
-            --surface-color: #292727;
-            --accent-green: #0de91f;
-            --accent-yellow: #e9ae0d;
-            --text-main: #aca9a9;
-            --text-light: #ffffff;
-            --stack-color: #729eb8;
-        }
-
-        /* --- 2. Базовые сбросы --- */
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Aileron, Arial, Helvetica, sans-serif;
-            line-height: 1.6;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            scroll-behavior: smooth;
-            
-            /* Прижимаем футер к низу через Flexbox на уровне body */
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* --- 3. Утилиты и контейнеры --- */
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding-left: 20px;
-            padding-right: 20px;
-        }
-
-        /* --- 4. Шапка (Header & Nav) --- */
-        .header {
-            border-bottom: 1px solid var(--accent-green);
-            background-color: var(--surface-color);
-        }
-
-        .header__left {
-            background-color: #0de91f;
-        }
-
-        .header__right {
-            background-color: #e9ae0d;
-        }
-
-        .header__inner {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            padding-top: 12px;
-            padding-bottom: 12px;
-        }
-
-        .header__avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%; /* Сделаем аватарку круглой, смотрится аккуратнее */
-            object-fit: cover;
-        }
-
-        .nav__list {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-
-        .nav__link {
-            display: inline-block;
-            padding: 8px 12px;
-            color: var(--text-main);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s ease;
-        }
-
-        .nav__link:hover,
-        .nav__link:focus-visible {
-            color: var(--text-light);
-            outline: 2px solid var(--accent-green); /* Доступность фокуса */
-            outline-offset: 2px;
-            border-radius: 4px;
-        }
-
-        /* --- 5. Основной контент --- */
-        .main {
-            /* flex-grow: 1 заставляет main занимать всё оставшееся пространство, 
-               тем самым «прижимая» футер к самому низу экрана */
-            flex-grow: 1;
-            padding-top: 40px;
-            padding-bottom: 40px;
-        }
-
-        .about {
-            margin-bottom: 30px;
-        }
-
-        .about__title {
-            margin-top: 0;
-            color: var(--text-light);
-            font-size: 1.5rem;
-        }
-
-        .about__repo-link {
-            color: var(--accent-yellow);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-
-        .about__repo-link:hover {
-            text-decoration: underline;
-        }
-
-        .about__subtitle {
-            margin-bottom: 8px;
-            color: var(--text-light);
-        }
-
-        .stack-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-
-        .stack-list__item {
-            padding: 4px 10px;
-            background-color: rgba(114, 158, 184, 0.1);
-            border: 1px solid var(--stack-color);
-            border-radius: 6px;
-            color: var(--stack-color);
-            font-size: 0.9rem;
-        }
-
-        .description {
-            color: var(--accent-green);
-            max-width: 800px;
-        }
-
-        /* Контейнер, куда рендерится Markdown */
-        .markdown-content {
-            /* Главное против длинных строк и ссылок */
-            overflow-wrap: break-word;
-            word-break: break-word; /* резервный вариант для старых браузеров */
-        }
-
-        .markdown-content a,
-        .markdown-content a:visited {
-            color: #ffffff !important; /* !important перебьет любые встроенные стили */
-        }
-
-        /* Дополнительно: чтобы длинный код или таблицы не ломали верстку сайта */
-        .markdown-content pre {
-            /* 1. Разрешаем перенос строк и сохраняем отступы/пробелы */
-            white-space: pre-wrap;
-            
-            /* 2. Принудительно разрываем слишком длинные слова или ссылки */
-            overflow-wrap: break-word;
-            word-break: break-word;
-
-            /* 3. Ограничиваем максимальную ширину на случай, если родительский блок сжался */
-            max-width: 100%;
-        }
-
-        .markdown-content pre code {
-            white-space: pre-wrap;
-            word-break: break-word;
-        }
-
-        .markdown-content table {
-            width: 100%;
-            overflow-x: auto;
-            display: block;
-        }
-
-        /* --- 6. Подвал (Footer) --- */
-        .footer {
-            border-top: 1px solid rgba(233, 174, 13, 0.2);
-            background-color: var(--surface-color);
-            padding-top: 20px;
-            padding-bottom: 20px;
-        }
-
-        .footer__inner {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            color: var(--accent-yellow);
-            font-size: 0.9rem;
-        }
-
-        .footer__link {
-            color: #729eb8;
-        }
-    </style>
+    <link href="./output.css" rel="stylesheet">
 </head>
-<body>
-    <header class="header">
-        <div class="container header__inner">
-            <img class="header__avatar" src="{{ .URLAvatar }}" alt="Avatar">
-            <h2>{{ .NameAuthor }}</h2>
-            <nav class="nav" aria-label="Главная навигация">
-                <ul class="nav__list">
+<body class="bg-custom-bg mx-auto p-0 font-custom text-custom-main leading-normal flex flex-col min-h-screen">
+    <header class="bg-custom-surface border-b border-solid border-custom-green">
+        <div class="w-full max-w-screen-xl mx-auto px-4 flex justify-between items-center flex-wrap py-3">
+            <img class="w-12.5 h-12.5 rounded-full object-cover" src="{{ .URLAvatar }}" alt="Avatar">
+            <h2 class="text-xl">{{ .NameAuthor }}</h2>
+            <nav aria-label="Главная навигация">
+                <ul class="flex items-center gap-5 mx-auto p-0">
                     {{ range .Links }}
-                    <li class="nav__item"><a href="{{ .URL }}" class="nav__link" target="_blank" rel="noopener noreferrer">{{ .Name }}</a></li>
+                    <li>
+                        <a href="{{ .URL }}" class="inline-block py-1 px-3 text-custom-main font-medium rounded transition-colors duration-200 ease-in-out hover:text-custom-yellow focus-visible:outline-2 outline-custom-yellow outline-offset-2" target="_blank" rel="noopener noreferrer">
+                            {{ .Name }}
+                        </a>
+                    </li>
                     {{ end }}
                 </ul>
             </nav>
         </div>
     </header>
-
-    <main class="main container">
-        <section class="about">
-            <h2 class="about__title">Мой репозиторий:</h2>
-            <a class="about__repo-link" href="{{ .URLRepository }}" target="_blank" rel="noopener noreferrer">
+    <main class="flex-1 pt-16 pb-16 w-full max-w-screen-xl mx-auto px-4">
+        <section class="mb-5">
+            <h2 class="mt-0 text-custom-light text-2xl font-bold">GitHub repository:</h2>
+            <a class="text-custom-yellow font-semibold text-lg" href="{{ .URLRepository }}" target="_blank" rel="noopener noreferrer">
                 {{ .NameRepository }} <span aria-hidden="true">🔗</span>
             </a>
-            <h4 class="about__subtitle">Stack</h4>
-            <ul class="stack-list">
+            <h4 class="my-2 text-custom-light font-bold">Stack</h4>
+            <ul class="flex flex-wrap gap-3 m-0 p-0">
                 {{ range .Stack }}
-                <li class="stack-list__item">{{ .Name }}</li>
+                <li class="bg-custom-bg-stack px-3 border border-solid border-custom-stack rounded-md text-subtitle text-custom-stack">{{ .Name }}</li>
                 {{ end }}
             </ul>
         </section>
-        
-        <div class="markdown-content">
-            <p class="description">
-                {{ .Description }}
-            </p>
-        </div>
+        <div class="prose prose-invert max-w-none">{{ .Description }}</div>
     </main>
-
-    <footer class="footer">
-        <div class="container footer__inner">
-            <div>© Copyright {{ .CopyrightYear }} {{ .NameAuthor }}. Content rights belong to the author.</div>
+    <footer class="bg-custom-surface pt-4 pb-4 border-t border-solid border-footer-border-color">
+        <div class="w-full max-w-screen-xl mx-auto px-4 flex justify-between items-center flex-wrap gap-2.5 text-custom-yellow text-subtitle">
+            <div>© Copyright {{ .CopyrightYear }} {{ .NameAuthor }} · Content rights belong to the author.</div>
             <div>
                 Powered by go-generator · Designed by
-                <a class="footer__link" href="https://github.com/my-app-s" target="_blank" rel="noopener noreferrer">
-                    my-app-s
-                </a>
+                <a class="text-custom-stack" href="https://github.com/my-app-s" target="_blank" rel="noopener noreferrer">my-app-s</a>
             </div>
             <div>
-                <a class="footer__link" href="https://github.com/my-app-s/go-generator/issues" target="_blank" rel="noopener noreferrer">
-                    Report Generator Issue
-                </a>
+                <a class="text-custom-stack" href="https://github.com/my-app-s/go-generator/issues" target="_blank" rel="noopener noreferrer">Report Generator Issue</a>
                 ·
-                <a class="footer__link" href="mailto:myapps.mre.dev@gmail.com" target="_blank" rel="noopener noreferrer">
-                    Contact author
-                </a>
+                <a class="text-custom-stack" href="mailto:myapps.mre.dev@gmail.com" target="_blank" rel="noopener noreferrer">Contact author</a>
             </div>
         </div>
     </footer>
-
 </body>
 </html>
