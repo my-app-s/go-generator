@@ -22,7 +22,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v7
 
-      - name: Build with Go and Tailwind v4
+      - name: Build with Go and Tailwind CLI
         uses: my-app-s/go-generator@v1
         with:
           config: 'config.json'
