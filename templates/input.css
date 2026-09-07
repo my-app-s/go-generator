@@ -1,0 +1,27 @@
+/*
+  Copyright (C) 2026 my-app-s (M.R.E)
+  Licensed under the GNU AGPLv3
+*/
+
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-custom-bg: #333230;
+  --color-custom-bg-stack: rgba(114, 158, 184, 0.1);;
+  --color-custom-surface: #292727;
+  --color-custom-green: #0de91f;
+  --color-custom-yellow: #e9ae0d;
+  --color-custom-main: #aca9a9;
+  --color-custom-stack: #729eb8;
+  
+  --color-custom-light: #ffffff;
+  --color-footer-border-color: rgba(233, 174, 13, 0.2);
+
+  --border-custom-stack: #729eb8;
+  
+  --outline-custom-green: #0de91f;
+
+  --font-custom: Aileron, Arial, Helvetica, sans-serif;
+  --text-subtitle: 0.9rem;
+}
