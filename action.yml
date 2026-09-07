@@ -50,12 +50,11 @@ runs:
     - name: Run compilation style
       shell: bash
       run: |
-        ls -la
         cd temp-generator-source
-        ls -la
         cd dist
-        ls -la
         ./tailwindcss-linux-x64 -i input.css -o ./output.css --minify
+        ls -la
+        rm input.css
         ls -la
         cd ..
         ls -la
@@ -65,5 +64,6 @@ runs:
       shell: bash
       run: |
         ls -la
+        ls -la dist
         mv dist ../
         ls -la
