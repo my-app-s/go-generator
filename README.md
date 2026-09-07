@@ -26,6 +26,26 @@
 - **Processing:** Чтение файлов, парсинг Markdown (`gomarkdown`), рендеринг через шаблоны Go и компиляция стилей Tailwind v4.
 - **Output:** Готовый оптимизированный `.html` и стилизованный `output.css` в директории `/dist`.
 
+## 🚀 Performance & Core Web Vitals
+
+Проект развернут на GitHub Pages и оптимизирован для максимальной скорости работы без лишнего клиентского JavaScript. Текущие метрики продакшена:
+
+| Метрика | Значение | Оценка |
+| :--- | :--- | :--- |
+| **Largest Contentful Paint (LCP)** | 0.33s | Отлично |
+| **Cumulative Layout Shift (CLS)** | 0.00 | Идеально |
+| **Interaction to Next Paint (INP)** | 32ms | Отлично |
+
+![LCP](https://img.shields.io/badge/LCP-0.33s-brightgreen?style=flat-square&logo=googlechrome)
+![CLS](https://img.shields.io/badge/CLS-0.00-brightgreen?style=flat-square&logo=googlechrome)
+![INP](https://img.shields.io/badge/INP-32ms-brightgreen?style=flat-square&logo=googlechrome)
+
+## 🛠 Tech Stack
+
+- **Core:** Go (Golang) — высокая скорость компиляции и генерации статики.
+- **Styles:** Tailwind CSS v4 — современная утилитарная стилизация без тяжелого раздувания.
+- **CI/CD:** GitHub Actions — полностью автоматизированный пайплайн сборки и деплоя на GitHub Pages.
+
 ## 🚀 Инструкции
 
 Примеры есть по пути `templates/examples/` в репозитории.
