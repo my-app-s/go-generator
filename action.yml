@@ -44,7 +44,6 @@ runs:
       run: |
         cd temp-generator-source
         ./go-generator --config "../temp-source/${{ inputs.config }}" --readme "../temp-source/${{ inputs.readme }}"
-        mv dist ../
 
     - name: Download Tailwind CLI
       shell: bash
