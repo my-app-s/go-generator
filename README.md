@@ -236,4 +236,4 @@ git push
 
 * **GitHub**: [@my-app-s](https://github.com/my-app-s)
 * **LinkedIn**: [In/my-app-s](https://www.linkedin.com/in/my-app-s)
-* **Mail**: [myapps.mre.dev@gmail.com](https://www.google.com/search?q=mailto%3Amyapps.mre.dev%40gmail.com)
+* **Mail**: [myapps.mre.dev@gmail.com](mailto:myapps.mre.dev@gmail.com)
