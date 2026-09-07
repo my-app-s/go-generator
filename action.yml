@@ -14,11 +14,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v7
-      with:
-        path: 'temp-source'
-
     - name: Checkout go-generator Repository
       uses: actions/checkout@v7
       with:
@@ -34,9 +29,7 @@ runs:
     - name: Build binaries
       shell: bash
       run: |
-        ls -la
         cd temp-generator-source
-        ls -la
         go mod tidy
         CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o go-generator .
         chmod +x go-generator
@@ -44,17 +37,13 @@ runs:
     - name: Generate static
       shell: bash
       run: |
-        ls -la
         cd temp-generator-source
-        ls -la
-        ./go-generator --config "../temp-source/${{ inputs.config }}" --readme "../temp-source/${{ inputs.readme }}"
+        ./go-generator --config "../${{ inputs.config }}" --readme "../${{ inputs.readme }}"
 
     - name: Download Tailwind CLI
       shell: bash
       run: |
-        ls -la
         cd temp-generator-source/dist
-        ls -la
         curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/download/v4.3.3/tailwindcss-linux-x64
         chmod +x tailwindcss-linux-x64
 
@@ -62,9 +51,14 @@ runs:
       shell: bash
       run: |
         ls -la
-        cd temp-generator-source/dist
+        cd temp-generator-source
+        ls -la
+        cd dist
         ls -la
         ./tailwindcss-linux-x64 -i input.css -o ./output.css --minify
+        ls -la
+        cd ..
+        ls -la
         mv dist ../dist
 
     - name: Move final dist to root
@@ -72,3 +66,4 @@ runs:
       run: |
         ls -la
         mv dist ../
+        ls -la
