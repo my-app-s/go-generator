@@ -53,17 +53,9 @@ runs:
         cd temp-generator-source
         cd dist
         ./tailwindcss-linux-x64 -i input.css -o ./output.css --minify
-        ls -la
-        rm input.css
-        ls -la
-        cd ..
-        ls -la
-        mv dist ../dist
+        rm input.css tailwindcss-linux-x64
 
     - name: Move final dist to root
       shell: bash
       run: |
-        ls -la
-        ls -la dist
-        mv dist ../
-        ls -la
+        mv temp-generator-source/dist ./dist
