@@ -1,27 +1,30 @@
 # HTML Generator in Go
 
-![Go Version](https://img.shields.io/badge/Go-1.25%2B-blue.svg)
+![Go Version](https://img.shields.io/badge/Go-1.25.6-blue.svg)
+![Tailwind Version](https://img.shields.io/badge/Tailwind-v4.3.3-blue.svg)
 ![License](https://img.shields.io/badge/License-GNU%20AGPLv3-red.svg)
-![Status](https://img.shields.io/badge/Status-Stabel-green)
+![Status](https://img.shields.io/badge/Status-Stable-green)
 ![Latest Tag](https://img.shields.io/github/v/tag/my-app-s/go-generator)
 
 > Status Github Actions
 > 
-> ![Status GitHub Pages](https://github.com/my-app-s/go-api-ping/actions/workflows/deploy-pages.yml/badge.svg)
+> ![Status GitHub Pages](https://github.com/my-app-s/go-generator/actions/workflows/deploy-pages.yml/badge.svg)
+[![GitHub Actions Status](https://img.shields.io/github/actions/workflow/status/my-app-s/go-generator/deploy-pages.yml?label=Action%3A%20uses%20v1&logo=github)](https://github.com/my-app-s/go-generator/actions)
 
 ## Описание
 
-Простой и быстрый локальный генератор статического лендинга(статической страницы) на Go так же реализован как CI для GitHub Actions для автоматического деплоя в GitHub Pages.
+Простой и быстрый локальный генератор статического лендинга на Go с поддержкой Tailwind CSS v4, реализованный также как композитный экшен для GitHub Actions для автоматического деплоя в GitHub Pages без лишних Node.js зависимостей.
 
 ### 🛠 Features
+- **Node.js-free Tailwind v4:** Компиляция стилей через standalone-бинарник Tailwind CLI.
 - **Local README Parsing:** Автоматически читает и конвертирует `README.md` в чистый HTML.
 - **Fast performance:** Генерация страницы занимает микросекунды благодаря Go.
-- **GitHub Pages Ready:** Автоматическая сборка с деплоем CI через GitHub Actions.
+- **GitHub Pages Ready:** Автоматическая сборка и деплой через GitHub Actions.
 
 ### 🎨 Визуализация процесса
-- **Input:** Конфигурация в `config.json` и `README.md` репозитория.
-- **Processing:** Чтение файлов, парсинг Markdown (`gomarkdown`) и рендеринг через шаблоны Go.
-- **Output:** Готовый оптимизированный `.html` файл в директории `/dist`.
+- **Input:** Конфигурация в `config.json`, `README.md` и разметка с Tailwind v4.
+- **Processing:** Чтение файлов, парсинг Markdown (`gomarkdown`), рендеринг через шаблоны Go и компиляция стилей Tailwind v4.
+- **Output:** Готовый оптимизированный `.html` и стилизованный `output.css` в директории `/dist`.
 
 ## 🚀 Инструкции
 
@@ -29,9 +32,9 @@
 
 ### 📦 Локальная генерация (OS Linux)
 
-Для локальный генерации лендинга необходимо:
+Для локальной генерации лендинга необходимо:
 - скачать репозиторий командой `git clone https://github.com/my-app-s/go-generator.git`
-- перейти в деректорию скачаного `go-generator`
+- перейти в директорию скачанного `go-generator`
 - обновить зависимости командой `go mod tidy`
 - запустить `main.go`
 
@@ -39,131 +42,33 @@
 
 ```Bash
 # скачать репозиторий
-git clone https://github.com/my-app-s/go-generator.git
-# перейти в деректорию репозитория
+git clone [https://github.com/my-app-s/go-generator.git](https://github.com/my-app-s/go-generator.git)
+# перейти в директорию репозитория
 cd go-generator
 # обновить зависимости
 go mod tidy
 # запустить
 go run main.go
+
 ```
 
-- после создатся локальная директория `/dist` в которой будет сгенерированый файл `index.html`
-- перейти в директории `/dist` можно командой `cd dist`
-- посмотреть содержимое директории можно командой `ls`
+* после создастся локальная директория `/dist` в которой будет сгенерированный файл `index.html`
+* перейти в директорию `/dist` можно командой `cd dist`
+* посмотреть содержимое директории можно командой `ls`
 
 Команды для выполнения в терминале:
 
 ```Bash
-# перейти в деректорию dist
+# перейти в директорию dist
 cd dist
 # посмотреть содержимое директории
 ls
+
 ```
 
 ### 📦 CI деплой для GitHub Page (GitHub Actions)
 
-Для автоматического деплоя с помощью GitHub Actions как CI для GitHub Page необходимо следующее:
-- создать в репозитории файл `deploy.yml` по пути `.github/workflows`
-
-Команды для выполнения в терминале:
-
-```Bash
-# созлание деректорий .github/workflows (ключ -p позволяет создать полный путь директорий)
-mkdir -p `.github/workflows`
-# созлание deploy.yml
-touch .github/workflows/deploy.yml
-```
-
-- скопировать пример **deploy** ниже в созданный файл `deploy.yml`
-
-```yml
-name: Deploy to GitHub Pages
-
-on:
-  push:
-    # Запускаем workflows при пуше в ветку main или вручную
-    branches: [ main ]
-    # Игнорируем файлы при изменении которых деплой не будет запускаться
-    paths-ignore:
-      - 'LICENSE'
-      - '.gitignore'
-      - '.github/workflows/**'
-  workflow_dispatch:
-
-# Устанавливаем права
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Разрешаем только один одновременный деплой
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Landing Repository (конфиг и редми)
-        uses: actions/checkout@v7
-        with:
-          path: landing-source
-
-      - name: Checkout Generator Repository (исходники генератора на Go)
-        uses: actions/checkout@v7
-        with:
-          repository: 'my-app-s/go-generator'
-          path: generator-source
-
-      - name: Set up Go
-        uses: actions/setup-go@v7
-        with:
-          go-version: '1.25'
-          cache: false
-
-      - name: Install dependencies
-        run: |
-          cd generator-source
-          go mod tidy
-
-      - name: Build binaries
-        run: |
-          cd generator-source
-          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o go-generator .
-          chmod +x ./go-generator
-
-      - name: Copy binaries
-        run: cp ./go-generator ../landing-source
-
-      - name: Run Go Generator
-        run: |
-          cd landing-source
-          ./go-generator
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v6
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v5
-        with:
-          path: 'landing-source/dist'
-          retention-days: 1
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v5
-```
-
-Альтернативный вариант использование как Action:
+Для автоматического деплоя с помощью GitHub Actions в качестве CI для GitHub Pages рекомендуется использовать готовый композитный экшен:
 
 ```yml
 name: Deploy to GitHub Pages
@@ -190,10 +95,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Landing Repository (конфиг и редми)
+      - name: Checkout Landing Repository
         uses: actions/checkout@v7
 
-      # Использование my-app-s/go-generator@1 action
       - name: Generate Static Site
         uses: my-app-s/go-generator@v1
 
@@ -216,23 +120,24 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+
 ```
 
-- создать в корне репозитория файл `config.json`
+* создать в корне репозитория файл `config.json`
 
 Команды для выполнения в терминале:
 
 ```Bash
 # создание config.json
 touch config.json
+
 ```
 
-- скопировать пример **config** ниже в созданный файл `config.json`
+* скопировать пример **config** ниже в созданный файл `config.json`
 
 > [!IMPORTANT]
->
-> В файле config.json обязательно заполнить
-> Редактировать по правилам синтаксиса JSON
+> В файле config.json обязательно заполнить данные.
+> Редактировать по правилам синтаксиса JSON.
 
 ```json
 {
@@ -251,26 +156,28 @@ touch config.json
     {"name": "название", "url": "ссылка"},
     {"name": "название", "url": "ссылка"}
   ],
-  "footer_year": "год для copyright",
+  "copyright_year": 2026
 }
+
 ```
 
-- в корне должен быть `README.md` (не обязательно но на сайте будет выведено `Описание временно недоступно`)
-- выполнить коммит
-- выполнить push
+* в корне должен быть `README.md` (не обязательно, но на сайте будет выведено *«Описание временно недоступно»*)
+* выполнить коммит
+* выполнить push
 
 ## Realization Action
 
 ### Example use in deploy:
 
-Если стандартно по инструкции:
+Стандартное использование:
 
 ```yaml
 - name: Generate Static Site
   uses: my-app-s/go-generator@v1
+
 ```
 
-Или используется кастомный подход:
+Или использование с кастомными путями:
 
 ```yaml
 - name: Generate Static Site
@@ -278,15 +185,15 @@ touch config.json
   with:
     config: 'custom-config.json'
     readme: 'docs/MAIN_README.md'
+
 ```
 
 ### 🔄 Обновление генератора в лендингах
 
-Если обновлен код в репозиторий `go-generator` (например, изменил шаблон HTML), то созданный лендинг подтянет изменения при следующем деплое. Чтобы принудительно запустить пересборку без изменения файлов лендинга, необходимо выполнить пустой коммит:
+Если обновлен код в репозитории `go-generator` (например, изменился шаблон или логика Tailwind), то созданный лендинг подтянет изменения при следующем деплое. Чтобы принудительно запустить пересборку без изменения файлов лендинга, необходимо выполнить пустой коммит:
 
 > [!IMPORTANT]
->
-> Но нужно из `paths-ignore` в `deploy.yml` удалить `'.github/workflows/**'` если этого не сделать **обновление генератора в лендингах** не сработает.
+> Предварительно нужно удалить `'.github/workflows/**'` из строки `paths-ignore` в файле `deploy.yml`, иначе пуш изменений воркфлоу не триггерит сборку лендинга.
 
 ```bash
 git commit --allow-empty -m "ci: trigger rebuild with latest generator template"
@@ -298,13 +205,15 @@ git push
 
 * **Short Disclaimer (EN)**: Materials are provided ***as is*** under the LICENSE file. No warranties. Authors are not liable for damages. No partnership or obligations created.
 * **Short Disclaimer (RU)**: Материалы предоставляются ***как есть*** и регулируются файлом LICENSE. Гарантий нет. Автор(ы) не несут ответственности за убытки. Партнёрство или обязательства не создаются.
-* **Full Disclaimer**: Read the full text in the [DISCLAIMER](./DISCLAIMER.md) (Available in EN/RU).
+* **Full Disclaimer**: Read the full text in the [DISCLAIMER](https://www.google.com/search?q=./DISCLAIMER.md) (Available in EN/RU).
 * **License**: This project is dual-licensed:
-  * **Open Source**: Licensed under the [GNU AGPLv3](./LICENSE).
-  * **Commercial**: A separate proprietary commercial license is required for proprietary, closed-source, or enterprise use that does not comply with AGPLv3 terms. Contact the copyright holder for commercial licensing.
+* **Open Source**: Licensed under the [GNU AGPLv3](https://www.google.com/search?q=./LICENSE).
+* **Commercial**: A separate proprietary commercial license is required for proprietary, closed-source, or enterprise use that does not comply with AGPLv3 terms. Contact the copyright holder for commercial licensing.
+
+
 
 ## Author & Contacts
 
 * **GitHub**: [@my-app-s](https://github.com/my-app-s)
 * **LinkedIn**: [In/my-app-s](https://www.linkedin.com/in/my-app-s)
-* **Mail**: [myapps.mre.dev@gmail.com](mailto:myapps.mre.dev@gmail.com)
+* **Mail**: [myapps.mre.dev@gmail.com](https://www.google.com/search?q=mailto%3Amyapps.mre.dev%40gmail.com)
