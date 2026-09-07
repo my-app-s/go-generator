@@ -58,8 +58,3 @@ runs:
       run: |
         cd dist
         ./tailwindcss-linux-x64 -i input.css -o ./output.css --minify
-
-    - name: Move dist
-      shell: bash
-      run: |
-        mv dist ../
